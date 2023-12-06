@@ -43,13 +43,21 @@ def chess_dilation(img):
 
     return img_dilation
 
+#adaptive thres image output works well with circle clearly visible. To do -> implement slider for different light conditions.
+def adaptive_thresh(img):
+    #works well, getting circle.
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    blurred = cv2.GaussianBlur(gray, (5, 5), 0)
+    adapt = cv2.adaptiveThreshold(blurred, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 6)
+    return adapt
+
 #Try top hat, morphological gradient method. Morph gradient outputs black white overlay
 # try bit masking over this layer.
 def morph_gradient(img):
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     kernel = np.ones((5,5), np.uint8)
     #set img as boardchess in MAIN.
-    #invert = cv2.bitwise_not(img) 
+    #invert = cv2.bitwise_not(img)
     morph_gradient = cv2.morphologyEx(gray, cv2.MORPH_GRADIENT, kernel, iterations = 1) 
     return morph_gradient
 
@@ -64,3 +72,6 @@ def bit_masking_grad(img_grad, img):
     return result
 
 #Also: think about what to do when there is obstacles on chess board => e.g. robot arm moving
+
+
+#Try out template matching for chess piece detection.

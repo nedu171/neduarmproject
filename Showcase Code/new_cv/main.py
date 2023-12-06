@@ -6,6 +6,7 @@ from Cropping import ExtractAndStraightenFromImage
 from LocateGrid import DetectGrid
 from LocateGrid import morph_gradient
 from LocateGrid import bit_masking_grad
+from LocateGrid import adaptive_thresh
 
 IMAGE_FILE_PATH = os.path.join("Capture", "BoardPictures")
 
@@ -29,13 +30,14 @@ while True:
 
     boardImg = ExtractAndStraightenFromImage(frame)
     checkBoard = DetectGrid(boardImg)
+    adapt_img = adaptive_thresh(boardImg) 
     morphImg = morph_gradient(boardImg)
     bitResult = bit_masking_grad(morphImg, boardImg)
 
     cv2.imshow("Frame", frame)
     #cv2.imshow("Board img", boardImg)
     cv2.imshow("Check board", checkBoard)
-    cv2.imshow("Morph Method", morphImg)
+    cv2.imshow("Adaptive Thres Method", adapt_img)
     cv2.imshow("Bit Result", bitResult)
 
     if key & 0xFF == ord('q'):
